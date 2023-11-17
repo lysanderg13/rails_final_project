@@ -22,4 +22,6 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+* testing commits -Lysander
 # rails_final_project
