@@ -24,4 +24,5 @@ Things you may want to cover:
 * ...
 
 * testing commits -Lysander
+* testing dev branch - Lysander
 # rails_final_project
