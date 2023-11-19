@@ -45,6 +45,8 @@ gem "bootsnap", require: false
 # Use Sass to process CSS
 gem "sassc-rails"
 
+# new gems for project
+gem "image_processing", "~> 1.2"
 gem 'activeadmin', '2.11'
 gem 'devise'
 
