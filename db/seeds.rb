@@ -47,3 +47,4 @@ products_data.each do |c|
   puts products.category_id
 end
 puts "Created #{Product.count} Products."
+AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
