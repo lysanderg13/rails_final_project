@@ -1,2 +1,31 @@
-<h1>Home#index</h1>
-<p>Find me in app/views/home/index.html.erb</p>
+<h1>Home</h1>
+<%= render 'shared/navbar' %>
+<%= yield %>
+<div class="container text-center" id ="home_columns">
+  <div class="row justify-content-start">
+    <div class="col">
+      <h2>Products</h2>
+        <% @products.each do |product| %>
+          <% if product.image.present? %>
+          <div class="card-image">
+            <figure class="image">
+              <%= image_tag product.image, style: "width:400px; height:450px;" %>
+            </figure>
+          </div>
+          <% end %>
+        <ol>
+          <li>
+            <%= link_to product.name, product %>
+          </li>
+        </ol>
+        <% end %>
+      <p class="mt-1">
+        <strong>
+          <%= link_to ' See all Products', products_path %>
+        </strong>
+      </p>
+    </div>
+  </div>
+</div>
+
+
