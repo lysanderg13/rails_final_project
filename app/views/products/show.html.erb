@@ -1,0 +1,12 @@
+<h3><%= @product.name %></h3>
+<p><%= @product.image %></p>
+<p><%= @product.description %></p>
+<p><%= @product.price %></p>
+
+<% if @product.image.present? %>
+  <div class="card-image">
+    <figure class="image">
+      <%= image_tag @product.image%>
+    </figure>
+  </div>
+<% end %>
