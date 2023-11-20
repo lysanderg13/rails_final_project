@@ -1,7 +1,7 @@
 require "csv"
 
-ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='products';")
 ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='categories';")
+ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='products';")
 
 # open the categories.csv
 file_one = Rails.root.join("db/Categories.csv")
@@ -47,3 +47,9 @@ products_data.each do |c|
   puts products.category_id
 end
 puts "Created #{Product.count} Products."
+
+# Creating admin user
+if Rails.env.development?
+  AdminUser.create!(email: "admin@example.com", password: "password",
+                    password_confirmation: "password")
+end
