@@ -1,4 +1,4 @@
-class ProductsController < ApplicationController
+class HomeController < ApplicationController
   before_action :initialize_session
   before_action :increment_visit_count, only: %i[index show]
   before_action :load_cart
@@ -9,15 +9,6 @@ class ProductsController < ApplicationController
 
   def show
     @product = Product.find(params[:id])
-  end
-
-  def add_to_cart
-    id = params[:id].to_i
-    quantity = params[:quantity].to_i
-    quantity = 1 if quantity <= 0  # Set quantity to 1 if not provided or invalid
-    session[:cart][id] ||= 0
-    session[:cart][id] += quantity
-    redirect_to cart_index_path
   end
 
   private

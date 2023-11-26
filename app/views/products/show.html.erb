@@ -1,12 +1,22 @@
+<%= render 'shared/navbar' %>
+<%= yield %>
+<details>
+  <summary>Shopping Cart</summary>
+  <ul>
+    <% @cart.each do |product|%>
+      <li><%= product.name %></li>
+      <% end %>
+  </ul>
+</details>
+<%= debug session[:cart] %>
 <h3><%= @product.name %></h3>
-<p><%= @product.image %></p>
-<p><%= @product.description %></p>
-<p><%= @product.price %></p>
-
 <% if @product.image.present? %>
   <div class="card-image">
     <figure class="image">
-      <%= image_tag @product.image%>
+      <%= image_tag @product.image, style: "width:400px; height:450px;" %>
     </figure>
   </div>
+<p><%= @product.description %></p>
+<p><%= number_to_currency @product.price %></p>
+<%= button_to 'Add to cart', add_to_cart_path(@product.id), method: :post %>
 <% end %>
