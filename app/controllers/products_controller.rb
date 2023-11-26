@@ -12,7 +12,11 @@ class ProductsController < ApplicationController
   end
 
   def add_to_cart
-    session[:cart] << params[:id]
+    id = params[:id].to_i
+    quantity = params[:quantity].to_i
+    quantity = 1 if quantity <= 0  # Set quantity to 1 if not provided or invalid
+    session[:cart][id] ||= 0
+    session[:cart][id] += quantity
     redirect_to cart_index_path
   end
 
@@ -20,11 +24,11 @@ class ProductsController < ApplicationController
 
   def initialize_session
     session[:visit_count] ||= 0
-    session[:cart] ||= []
+    session[:cart] ||= {}
   end
 
   def load_cart
-    @cart = Product.find(session[:cart])
+    @cart = Product.find(session[:cart].keys)
   end
 
   def increment_visit_count

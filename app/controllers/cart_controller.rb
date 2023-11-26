@@ -13,8 +13,10 @@ class CartController < ApplicationController
 
   def add_to_cart
     id = params[:id].to_i
-    session[:cart] << id unless session[:cart].include?(id)
-    redirect_to root_path
+    quantity = params[:quantity].to_i
+    session[:cart][id] ||= 0
+    session[:cart][id] += quantity
+    redirect_to cart_index_path
   end
 
   def remove_from_cart
@@ -27,11 +29,11 @@ class CartController < ApplicationController
 
   def initialize_session
     session[:visit_count] ||= 0
-    session[:cart] ||= []
+    session[:cart] ||= {}
   end
 
   def load_cart
-    @cart = Product.find(session[:cart])
+    @cart = Product.find(session[:cart].keys)
   end
 
   def increment_visit_count

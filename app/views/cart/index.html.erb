@@ -11,7 +11,7 @@
         <th>Description</th>
         <th>Price</th>
         <th>Quantity</th>
-        <th></th>
+        <th>Total</th> <!-- Added column for total -->
         <th></th>
       </tr>
     </thead>
@@ -21,7 +21,13 @@
           <td><%= product.name %></td>
           <td><%= product.description %></td>
           <td><%= number_to_currency(product.price) %></td>
-          <td><%= @cart.count(product) %></td>
+          <td><%= session[:cart][product.id.to_s] %></td>
+          <td>
+            <%= form_tag add_to_cart_path(product), method: :post do %>
+              <%= text_field_tag 'quantity', session[:cart][product.id] || 0 %>
+              <%= submit_tag 'Update Quantity' %>
+            <% end %>
+          </td>
           <td>
             <%= button_to 'Remove from Cart', remove_from_cart_path(product), method: :delete %>
           </td>
@@ -31,7 +37,7 @@
     <tfoot>
       <tr>
         <td colspan="4">Total:</td>
-        <td><%=  %></td>
+        <td><%= number_to_currency(@cart.sum { |product| product.price * (session[:cart][product.id.to_s] || 0) }) %></td>
         <td></td>
       </tr>
     </tfoot>

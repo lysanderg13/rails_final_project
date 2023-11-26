@@ -11,20 +11,15 @@ class HomeController < ApplicationController
     @product = Product.find(params[:id])
   end
 
-  def add_to_cart
-    session[:cart] << params[:id]
-    redirect_to cart_index_path
-  end
-
   private
 
   def initialize_session
     session[:visit_count] ||= 0
-    session[:cart] ||= []
+    session[:cart] ||= {}
   end
 
   def load_cart
-    @cart = Product.find(session[:cart])
+    @cart = Product.find(session[:cart].keys)
   end
 
   def increment_visit_count
