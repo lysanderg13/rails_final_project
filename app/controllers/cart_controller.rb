@@ -11,14 +11,6 @@ class CartController < ApplicationController
     @product = Product.find(params[:id])
   end
 
-  def add_to_cart
-    id = params[:id].to_i
-    quantity = params[:quantity].to_i
-    session[:cart][id] ||= 0
-    session[:cart][id] += quantity
-    redirect_to cart_index_path
-  end
-
   def remove_from_cart
     product_id = params[:id]
     session[:cart].delete(product_id)
