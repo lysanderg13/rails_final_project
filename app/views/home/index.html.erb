@@ -1,7 +1,6 @@
 <h1>Home</h1>
-
-<p>You have visited this site <%= pluralize @visit_count, 'time' %>.</p>
-
+<p>Items in Cart</p>
+<%= debug session[:cart] %>
 <%= render 'shared/navbar' %>
 <%= yield %>
 <div class="container text-center" id ="home_columns">
