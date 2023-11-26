@@ -18,9 +18,9 @@ class CartController < ApplicationController
   end
 
   def remove_from_cart
-    id = params[:id].to_i
-    session[:cart].delete(id)
-    redirect_to cart_path, notice: "Product removed from cart."
+    product_id = params[:id]
+    session[:cart].delete(product_id)
+    redirect_to cart_index_path, notice: "Product removed from cart."
   end
 
   private

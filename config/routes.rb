@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
   post "products/add_to_cart/:id", to: "products#add_to_cart", as: :add_to_cart
 
-  delete "cart/remove_from_cart/:id", to: "cart#remove_from_cart", as: :remove_from_cart
+  delete "products/remove_from_cart/:id", to: "cart#remove_from_cart", as: :remove_from_cart
 
   resources :cart, only: %i[index]
 

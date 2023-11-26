@@ -12,9 +12,8 @@ class HomeController < ApplicationController
   end
 
   def add_to_cart
-    id = params[:id].to_i
-    session[:cart] << id unless session[:cart].include?(id)
-    redirect_to root_path
+    session[:cart] << params[:id]
+    redirect_to cart_index_path
   end
 
   private
