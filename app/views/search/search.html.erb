@@ -1,0 +1,22 @@
+<%= stylesheet_link_tag 'application', media: 'all' %>
+<h2 class="title is-2 mt-3 ml-3">Search</h2>
+  <%= render 'shared/navbar' %>
+  <%= yield %>
+
+<h1>Search Results for "<%= @query %>"</h1>
+
+<% @results.each do |product| %>
+  <% if params[:category].blank? %>
+    <!-- Display all products when no category is selected -->
+    <%= product.name %>
+  <% elsif params[:category] == 'men' && product.category_id == 1 %>
+    <!-- Display men only products when 'men' category is selected -->
+    <%= product.name %>
+  <% elsif params[:category] == 'women' && product.category_id == 2 %>
+    <!-- Display women only products when 'women' category is selected -->
+    <%= product.name %>
+  <% elsif params[:category] == 'new_arrivals' && product.category_id == 3 %>
+    <!-- Display new arrival only products when 'new_arrivals' category is selected -->
+    <%= product.name %>
+  <% end %>
+<% end %>

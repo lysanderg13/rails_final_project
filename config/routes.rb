@@ -5,6 +5,8 @@ Rails.application.routes.draw do
 
   root to: "home#index"
 
+  get "search", to: "search#search"
+
   resources :products, only: %i[index show]
 
   post "products/add_to_cart/:id", to: "products#add_to_cart", as: :add_to_cart
