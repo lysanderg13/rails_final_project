@@ -19,6 +19,12 @@
         </li>
       </ul>
 
+      <%= form_tag search_path, method: :get, class: "d-flex", role: "search" do %>
+        <%= text_field_tag :search, params[:search], class: "form-control me-2", type: "search", placeholder: "Search", aria: { label: "Search" } %>
+        <%= select_tag :category, options_for_select([['Select Category', ''], ['Men', 'men'], ['Women', 'women'], ['New Arrivals', 'new_arrivals']], params[:category]), class: "form-select me-2", aria: { label: "Category" } %>
+        <%= submit_tag "Search", class: "btn btn-outline-success", type: "submit" %>
+      <% end %>
+
       <ul class="navbar-nav ml-auto"> <!-- Add ml-auto class to align items to the right -->
         <li class="nav-item">
           <% if customer_signed_in? %>
