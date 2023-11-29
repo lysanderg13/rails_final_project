@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
+  devise_for :customers, controllers: { sessions: "customers/sessions" }
+
   get "about", to: "about#index"
 
   root to: "home#index"
+
+  get "search", to: "search#search"
 
   resources :products, only: %i[index show]
 

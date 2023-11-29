@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_19_234406) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_29_033909) do
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -74,12 +74,19 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_19_234406) do
   create_table "customers", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
-    t.string "password"
-    t.string "email"
     t.string "address"
     t.string "phone"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "province_id"
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.index ["email"], name: "index_customers_on_email", unique: true
+    t.index ["province_id"], name: "index_customers_on_province_id"
+    t.index ["reset_password_token"], name: "index_customers_on_reset_password_token", unique: true
   end
 
   create_table "products", force: :cascade do |t|
@@ -94,7 +101,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_19_234406) do
     t.index ["category_id"], name: "index_products_on_category_id"
   end
 
+  create_table "provinces", force: :cascade do |t|
+    t.string "name"
+    t.decimal "tax_rate"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "customers", "provinces"
   add_foreign_key "products", "categories"
 end

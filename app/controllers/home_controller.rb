@@ -4,7 +4,7 @@ class HomeController < ApplicationController
   before_action :load_cart
 
   def index
-    @products = Product.page(params[:page]).per(20)
+    @products = Product.page(params[:page]).per(6)
   end
 
   def show
