@@ -1,12 +1,5 @@
-<h1>Home</h1>
-<details>
-  <summary>Shopping Cart</summary>
-  <ul>
-    <% @cart.each do |product|%>
-      <li><%= product.name %></li>
-      <% end %>
-  </ul>
-</details>
+<h1>ScentHaven</h1>
+<p>Welcome, <%= @customer_name %></p>
 <%= render 'shared/navbar' %>
 <%= yield %>
 <div class="container text-center" id ="home_columns">
