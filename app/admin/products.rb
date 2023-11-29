@@ -17,7 +17,8 @@ ActiveAdmin.register Product do
     f.semantic_errors
     f.inputs
     f.inputs do
-      f.input :image, as: :file, hint: image_tag(f.object.image)
+      f.input :image, as:   :file,
+                      hint: (f.object.image.attached? ? image_tag(f.object.image) : content_tag(:span, "No image available"))
     end
     f.actions
   end
