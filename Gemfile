@@ -51,7 +51,10 @@ gem "sassc-rails"
 # new gems for project
 gem "image_processing", "~> 1.2"
 gem 'activeadmin', '2.11'
+
 gem 'devise'
+
+gem 'jquery-rails'
 
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]

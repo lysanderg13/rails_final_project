@@ -1,23 +1,37 @@
-  <nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <%= link_to 'Home', root_path, class: 'nav-link active', 'aria-current' => 'page' %>
-          </li>
-          <li class="nav-item">
-            <%= link_to 'About', about_path, class: 'nav-link' %>
-          </li>
-          <li class="nav-item">
-            <%= link_to 'Products', products_path, class: 'nav-link' %>
-          </li>
-          <li class="nav-item">
-            <%= link_to 'Shopping Cart', cart_index_path, class: 'nav-link' %>
-          </li>
-        </ul>
-      </div>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <%= link_to 'Home', root_path, class: 'nav-link active', 'aria-current' => 'page' %>
+        </li>
+        <li class="nav-item">
+          <%= link_to 'About', about_path, class: 'nav-link' %>
+        </li>
+        <li class="nav-item">
+          <%= link_to 'Products', products_path, class: 'nav-link' %>
+        </li>
+        <li class="nav-item">
+          <%= link_to 'Shopping Cart', cart_index_path, class: 'nav-link' %>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav ml-auto"> <!-- Add ml-auto class to align items to the right -->
+        <li class="nav-item">
+          <% if customer_signed_in? %>
+            <%= form_tag(destroy_customer_session_path, method: :delete, class: 'nav-link') do %>
+              <%= submit_tag 'Logout' %>
+            <% end %>
+          <% else %>
+            <%= form_tag(new_customer_session_path, method: :get, class: 'nav-link') do %>
+              <%= submit_tag 'Login' %>
+            <% end %>
+          <% end %>
+        </li>
+      </ul>
     </div>
+  </div>
 </nav>
