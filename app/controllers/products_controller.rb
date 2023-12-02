@@ -7,6 +7,13 @@ class ProductsController < ApplicationController
     @products = Product.page(params[:page]).per(20)
   end
 
+  def index_category
+    # Index action specific to a category
+    @category_id = params[:category_id]
+    @products = Product.where(category_id: @category_id)
+    render 'index'
+  end
+
   def show
     @product = Product.find(params[:id])
   end

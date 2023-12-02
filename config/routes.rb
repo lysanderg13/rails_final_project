@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  resources :products do
+    collection do
+      get 'index_by_category/:category_id', action: :index_by_category, as: 'index_category'
+    end
+  end
+
   devise_for :customers, controllers: { sessions: "customers/sessions" }
 
   get "about", to: "about#index"
