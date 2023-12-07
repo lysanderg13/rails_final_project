@@ -1,9 +1,18 @@
 Rails.application.routes.draw do
-  get 'orders/index'
-  get 'orders/show'
+  get "orders/new"
+  get "orders/create"
+
+  scope "/checkout" do
+    post "create", to: "checkout#create", as: "checkout_create"
+    get "cancel", to: "checkout#cancel", as: "checkout_cancel"
+    get "success", to: "checkout#success", as: "checkout_success"
+  end
+
+  resources :checkout, only: [:create], format: :js
+
   resources :products do
     collection do
-      get 'index_by_category/:category_id', action: :index_by_category, as: 'index_category'
+      get "index_by_category/:category_id", action: :index_by_category, as: "index_category"
     end
   end
 

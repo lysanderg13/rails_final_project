@@ -11,7 +11,7 @@
         <th>Description</th>
         <th>Price</th>
         <th>Quantity</th>
-        <th>Total</th> <!-- Added column for total -->
+        <th>Subtotal</th> <!-- Added column for total -->
         <th></th>
       </tr>
     </thead>
@@ -36,11 +36,12 @@
     </tbody>
     <tfoot>
       <tr>
-        <td colspan="4">Total:</td>
+        <td colspan="4">Subtotal:</td>
         <td><%= number_to_currency(@cart.sum { |product| product.price * (session[:cart][product.id.to_s] || 0) }) %></td>
         <td></td>
       </tr>
     </tfoot>
   </table>
+  <%= button_to 'Checkout', checkout_create_path, method: :post, params: { product_ids: @cart.map(&:id) } %>
 <% end %>
 
