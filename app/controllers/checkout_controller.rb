@@ -33,15 +33,31 @@ class CheckoutController < ApplicationController
       success_url:          checkout_success_url,
       cancel_url:           checkout_cancel_url
     )
-
     respond_to do |format|
       format.html
     end
   end
 
   def success
-    @session = Stripe::Checkout::Session.retrieve(params[:session_id])
-    @payment_intent = Stripe::PaymentIntent.retrieve(@session.payment_intent)
+    # Ensure that params[:session_id] is present before attempting to retrieve the session
+    if params[:session_id].present?
+      # Retrieve the Stripe session using the session_id
+      @session = Stripe::Checkout::Session.retrieve(params[:session_id])
+
+      # Retrieve the payment intent associated with the session
+      @payment_intent = Stripe::PaymentIntent.retrieve(@session.payment_intent)
+
+      # You may want to perform additional checks or handle the success logic here
+
+      # Render the success page
+      render "success"
+    else
+      # Redirect to an error page or handle the situation where session_id is not present
+    end
+  rescue Stripe::StripeError => e
+    # Handle any errors that might occur during retrieval
+    Rails.logger.error("Stripe session retrieval failed: #{e.message}")
+    redirect_to root_path, alert: 'Something went wrong. Please try again.'
   end
 
   def cancel; end
