@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'orders/index'
+  get 'orders/show'
   resources :products do
     collection do
       get 'index_by_category/:category_id', action: :index_by_category, as: 'index_category'
