@@ -1,6 +1,5 @@
 <%= render 'shared/navbar' %>
 <%= yield %>
-
 <table>
   <thead>
     <tr>
@@ -38,42 +37,78 @@
 </table>
 
 <h3>Your Shopping Cart</h3>
-<% if @cart.empty? %>
-  <p>Your cart is empty.</p>
-<% else %>
-  <table>
-    <thead>
-      <tr>
-        <th>Product</th>
-        <th>Description</th>
-        <th>Price</th>
-        <th>Quantity</th>
-        <th></th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @cart.each do |product| %>
+<% if current_customer %>
+  <% if @cart.empty? %>
+    <p>Your cart is empty.</p>
+  <% else %>
+    <table>
+      <thead>
         <tr>
-          <td><%= product.name %></td>
-          <td><%= product.description %></td>
-          <td><%= number_to_currency(product.price) %></td>
-          <td><%= session[:cart][product.id.to_s] %></td>
-          <td>
-            <%= form_tag add_to_cart_path(product), method: :post do %>
-              <%= text_field_tag 'quantity', session[:cart][product.id] || 0 %>
-              <%= submit_tag 'Update Quantity' %>
-            <% end %>
-          </td>
-          <td>
-            <%= button_to 'Remove from Cart', remove_from_cart_path(product), method: :delete %>
-          </td>
+          <th>Product</th>
+          <th>Description</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th></th>
+          <th></th>
         </tr>
-      <% end %>
-    </tbody>
-    <tfoot>
-      <!-- ... your existing total calculations ... -->
-    </tfoot>
-  </table>
-  <%= button_to 'Checkout', checkout_create_path, method: :post, params: { product_ids: @cart.map(&:id) } %>
+      </thead>
+      <tbody>
+        <% @cart.each do |product| %>
+          <tr>
+            <td><%= product.name %></td>
+            <td><%= product.description %></td>
+            <td><%= number_to_currency(product.price) %></td>
+            <td><%= session[:cart][product.id.to_s] %></td>
+            <td>
+              <%= form_tag add_to_cart_path(product), method: :post do %>
+                <%= text_field_tag 'quantity', session[:cart][product.id] || 0 %>
+                <%= submit_tag 'Update Quantity' %>
+              <% end %>
+            </td>
+            <td>
+              <%= button_to 'Remove from Cart', remove_from_cart_path(product), method: :delete %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="4">Subtotal:</td>
+          <td><%= number_to_currency(@cart.sum { |product| product.price * (session[:cart][product.id.to_s] || 0) }) %></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td colspan="4">PST:</td>
+          <td><%= calculate_pst(@cart, current_customer) %></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td colspan="4">GST:</td>
+          <td><%= calculate_gst(@cart, current_customer) %></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td colspan="4">HST:</td>
+          <td><%= calculate_hst(@cart, current_customer) %></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td colspan="4">Total:</td>
+          <td><%= calculate_total_amount(@cart, current_customer) %></td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+    <%= button_to 'Checkout', checkout_create_path, method: :post, params: { product_ids: @cart.map(&:id) } %>
+  <% end %>
+<% else %>
+  <tr>
+    <td colspan="2">Please create an account to purchase items.</td>
+  </tr>
 <% end %>
+
+
+
+
+
+

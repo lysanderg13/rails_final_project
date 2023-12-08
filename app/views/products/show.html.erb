@@ -1,14 +1,5 @@
 <%= render 'shared/navbar' %>
 <%= yield %>
-<details>
-  <summary>Shopping Cart</summary>
-  <ul>
-    <% @cart.each do |product|%>
-      <li><%= product.name %></li>
-      <% end %>
-  </ul>
-</details>
-<%= debug session[:cart] %>
 <h3><%= @product.name %></h3>
 <% if @product.image.present? %>
   <div class="card-image">
