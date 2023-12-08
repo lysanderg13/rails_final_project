@@ -1,5 +1,34 @@
 <%= render 'shared/navbar' %>
 <%= yield %>
+<table>
+  <thead>
+    <tr>
+      <th colspan="2">Shipping To</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Name:</td>
+      <td><%= current_customer.first_name %> <%= current_customer.last_name %></td>
+    </tr>
+    <tr>
+      <td>Email:</td>
+      <td><%= current_customer.email %></td>
+    </tr>
+    <tr>
+      <td>Address:</td>
+      <td><%= current_customer.address %></td>
+    </tr>
+    <tr>
+      <td>Phone:</td>
+      <td><%= current_customer.phone %></td>
+    </tr>
+    <tr>
+      <td>Province:</td>
+      <td><%= current_customer.province.name %></td>
+    </tr>
+  </tbody>
+</table>
 <h3>Your Shopping Cart</h3>
 <% if @cart.empty? %>
   <p>Your cart is empty.</p>

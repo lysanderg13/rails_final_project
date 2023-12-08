@@ -7,6 +7,7 @@ class CartController < ApplicationController
 
   def index
     @products = Product.page(params[:page]).per(20)
+    @customers = current_customer
   end
 
   def show
