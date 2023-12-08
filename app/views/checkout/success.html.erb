@@ -1,0 +1,67 @@
+<%= render 'shared/navbar' %>
+<%= yield %>
+<table>
+  <h2 class="order-heading">Order Confirmed!</h2>
+  <thead>
+    <tr>
+      <th colspan="2">Shipping To</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Name:</td>
+      <td><%= current_customer.first_name %> <%= current_customer.last_name %></td>
+    </tr>
+    <tr>
+      <td>Email:</td>
+      <td><%= current_customer.email %></td>
+    </tr>
+    <tr>
+      <td>Address:</td>
+      <td><%= current_customer.address %></td>
+    </tr>
+    <tr>
+      <td>Phone:</td>
+      <td><%= current_customer.phone %></td>
+    </tr>
+    <tr>
+      <td>Province:</td>
+      <td><%= current_customer.province.name %></td>
+    </tr>
+  </tbody>
+</table>
+<h3 class="order-heading">Your Order Details:</h3>
+<% if @order.present? %>
+  <table class="order-details-table">
+    <tr>
+      <th>Order Number</th>
+      <th>Total Amount</th>
+      <th>Tax Amount</th>
+      <th>Order Date</th>
+    </tr>
+    <tr>
+      <td><%= @order.id %></td>
+      <td><%= number_to_currency(@order.total) %></td>
+      <td><%= number_to_currency(@order.tax_amount) %></td>
+      <td><%= @order.order_date %></td>
+    </tr>
+  </table>
+
+  <h3 class="products-heading">Products:</h3>
+  <table class="product-table">
+    <tr>
+      <th>Product</th>
+      <th>Price</th>
+      <th>Quantity</th>
+    </tr>
+    <% @order.order_items.each do |order_item| %>
+      <tr>
+        <td><%= order_item.product.name %></td>
+        <td><%= number_to_currency(order_item.product.price) %></td>
+        <td><%= order_item.quantity %></td>
+      </tr>
+    <% end %>
+  </table>
+<% else %>
+  <p>No order details available.</p>
+<% end %>

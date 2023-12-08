@@ -6,14 +6,18 @@
 <h3>Products</h3>
 <div class="container text-center" id="home_columns">
   <div class="row justify-content-start">
-    <% @products.each do |product| %>
+    <% filtered_products = @products %>
+    <% if params[:category_id].present? %>
+      <% filtered_products = @products.where(category_id: params[:category_id]) %>
+    <% end %>
+
+    <% filtered_products.each do |product| %>
       <% if product.image.present? %>
-        <div class="col-md-4 mb-4"> <!-- Adjust the column width and margin based on your needs -->
+        <div class="col-md-4 mb-4">
           <div class="card" style="height: 100%;">
             <div class="card-image">
               <figure class="image" style="height: 200px; overflow: hidden;">
                 <%= image_tag product.image, style: "width:100%; height:100%; object-fit: contain;" %>
-                <!-- Adjust the object-fit based on your needs -->
               </figure>
             </div>
             <div class="card-body">
@@ -34,6 +38,3 @@
     </div>
   </div>
 </div>
-
-
-

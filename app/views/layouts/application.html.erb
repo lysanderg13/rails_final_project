@@ -2,15 +2,16 @@
 <html>
   <head>
     <title>RailsFinalProject</title>
-    <%= stylesheet_link_tag 'application', media: 'all' %>
+    <%= stylesheet_link_tag 'application', media: 'all'%>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csp_meta_tag %>
     <%= csrf_meta_tags %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <script src="https://js.stripe.com/v3/"></script>
   </head>
   <body>
-    <h1>ScentHaven</h1>
-    <p>Welcome, <%= @customer_name %></p>
+    <h1 class="ml-4">ScentHaven</h1>
+    <p class="ml-4">Welcome, <%= @customer_name %></p>
     <%= yield %>
   </body>
 </html>

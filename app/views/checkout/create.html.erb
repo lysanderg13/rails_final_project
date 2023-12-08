@@ -1,0 +1,20 @@
+<!-- create.html.erb -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirecting to Stripe Checkout</title>
+</head>
+<body>
+
+<script>
+  // Wait for the document to be ready before redirecting
+  document.addEventListener("DOMContentLoaded", function() {
+    // Redirect to the Stripe Checkout URL
+    window.location.replace('<%= @session.url %>');
+  });
+</script>
+
+</body>
+</html>
