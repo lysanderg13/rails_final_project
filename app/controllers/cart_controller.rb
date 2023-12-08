@@ -3,6 +3,8 @@ class CartController < ApplicationController
   before_action :increment_visit_count, only: %i[index show]
   before_action :load_cart
 
+  include CartsHelper
+
   def index
     @products = Product.page(params[:page]).per(20)
   end

@@ -1,0 +1,22 @@
+<!-- _invoice.html.erb -->
+<h2>Invoice</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Quantity</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @products.each do |product| %>
+      <tr>
+        <td><%= product.name %></td>
+        <td><%= product.quantity %></td>
+        <td>$<%= product.price.to_f / 100 %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<p>Total: $<%= @session.amount_total.to_f / 100 %></p>
