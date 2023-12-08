@@ -1,6 +1,6 @@
 # app/controllers/checkout_controller.rb
 class CheckoutController < ApplicationController
-  before_action :set_customer, only: [:create, :calculate_total_amount]
+  before_action :set_customer, only: [:success, :create, :calculate_total_amount]
 
   def create
     # Assuming params[:product_ids] is an array of product IDs
@@ -74,7 +74,7 @@ class CheckoutController < ApplicationController
     end.flatten
 
     # Save order and address details
-    @order = Order.new(customer: customer, order_date: Time.now, total:calculate_total_amount, tax_amount: total_tax_amoun )
+    @order = Order.new(customer: customer, order_date: Time.now, total: calculate_total_amount, tax_amount: total_tax_amount)
 
     # Create the Stripe Checkout session
     @session = Stripe::Checkout::Session.create(
@@ -87,7 +87,7 @@ class CheckoutController < ApplicationController
 
     # Store Stripe payment ID in the order
     if params[:session_id].present?
-      @order.payment_id = Stripe::PaymentIntent.retrieve(@session.payment_intent)
+      @order.payment_id = @session.payment_intent
       @order.save
     end
 
@@ -109,7 +109,12 @@ class CheckoutController < ApplicationController
 
       # Retrieve the payment intent associated with the session
       @payment_intent = Stripe::PaymentIntent.retrieve(@session.payment_intent)
-      # You may want to perform additional checks or handle the success logic here
+
+      @customer = current_customer
+
+      # Retrieve the order associated with the payment
+      @order = Order.find_by(payment_id: @session.payment_intent)
+
       # Render the success page
       render "success"
     else
@@ -126,11 +131,12 @@ class CheckoutController < ApplicationController
   end
 
   private
+
   def set_customer
     @customer = current_customer
   end
 
-  def calculate_total_amount()
+  def calculate_total_amount
     # Calculate total amount based on the products in the cart, including taxes
     total_without_taxes = @products.sum { |product| product.price * session[:cart][product.id.to_s].to_i }
 
@@ -148,5 +154,17 @@ class CheckoutController < ApplicationController
     # Calculate the final total by adding the total without taxes and total tax amount
     total_without_taxes + total_tax_amount
   end
-end
 
+  def total_tax_amount
+    # Calculate total tax amount based on the products and tax rates
+    total_tax_amount = @products.sum do |product|
+      product.price * (
+        session[:cart][product.id.to_s].to_i * (
+          @customer.province.gst_rate +
+          @customer.province.pst_rate +
+          @customer.province.hst_rate
+        )
+      )
+    end
+  end
+end
