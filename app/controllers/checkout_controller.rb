@@ -3,23 +3,17 @@ class CheckoutController < ApplicationController
   before_action :set_customer, only: [:success, :create, :calculate_total_amount]
 
   def create
-    # Assuming params[:product_ids] is an array of product IDs
     product_ids = params[:product_ids]
-
-    # Fetch the products based on the IDs
     @products = Product.where(id: product_ids)
 
-    # Check if any products were found
     if @products.blank?
       redirect_to cart_index_path
       return
     end
 
-    # Assuming that the current_customer method retrieves the logged-in customer
     customer = current_customer
-    province = customer.province # Assuming you have a province association in your Customer model
+    province = customer.province
 
-    # Fetch tax rates based on the customer's province
     gst_rate = province.gst_rate
     pst_rate = province.pst_rate
     hst_rate = province.hst_rate
@@ -33,7 +27,7 @@ class CheckoutController < ApplicationController
               name: product.name,
               description: product.description,
             },
-            unit_amount: (product.price * 100).to_i, # Stripe expects the amount in cents
+            unit_amount: (product.price * 100).to_i,
           },
           quantity: session[:cart][product.id.to_s].to_i,
         },
@@ -73,98 +67,55 @@ class CheckoutController < ApplicationController
       ]
     end.flatten
 
-    # Save order and address details
-    @order = Order.new(customer: customer, order_date: Time.now, total: calculate_total_amount, tax_amount: total_tax_amount)
+    total = line_items.sum { |item| item[:price_data][:unit_amount] * item[:quantity] }
+    tax_amount = line_items.sum { |item| item[:price_data][:unit_amount] * item[:quantity] * (gst_rate + pst_rate + hst_rate) }
 
-    # Create the Stripe Checkout session
     @session = Stripe::Checkout::Session.create(
       payment_method_types: ["card"],
-      mode: "payment", # Specify the mode as "payment" or "subscription"
+      mode: "payment",
       line_items: line_items,
       success_url: checkout_success_url + '?session_id={CHECKOUT_SESSION_ID}',
       cancel_url: checkout_cancel_url,
     )
 
-    # Store Stripe payment ID in the order
-    if params[:session_id].present?
-      @order.payment_id = @session.payment_intent
-      @order.save
-    end
-
-    @products.each do |product|
-      quantity = session[:cart][product.id.to_s].to_i
-      OrderItem.create(order: @order, product: product, quantity: quantity)
-    end
-
-    respond_to do |format|
-      format.html
-    end
+    redirect_to @session.url, status: :see_other, allow_other_host: true
   end
 
   def success
-    # Ensure that params[:session_id] is present before attempting to retrieve the session
-    if params[:session_id].present?
-      # Retrieve the Stripe session using the session_id
-      @session = Stripe::Checkout::Session.retrieve(params[:session_id])
+    @session = Stripe::Checkout::Session.retrieve(params[:session_id])
+    @payment_intent = Stripe::PaymentIntent.retrieve(@session.payment_intent)
+    product_ids = params[:product_ids]
+    @products = Product.where(id: product_ids)
 
-      # Retrieve the payment intent associated with the session
-      @payment_intent = Stripe::PaymentIntent.retrieve(@session.payment_intent)
+    if current_customer.present?
+      # Calculate total based on the Stripe session
+      total = @session.amount_total / 100.0
 
-      @customer = current_customer
+      # Fetch the customer's province and associated tax rates
+      province = current_customer.province
+      gst_rate = province.gst_rate
+      pst_rate = province.pst_rate
+      hst_rate = province.hst_rate
 
-      # Retrieve the order associated with the payment
-      @order = Order.find_by(payment_id: @session.payment_intent)
+      # Calculate the total tax amount based on the sum of tax rates
+      tax_rate = gst_rate + pst_rate + hst_rate
+      tax_amount = total * tax_rate
 
-      # Render the success page
-      render "success"
-    else
-      redirect_to root_path, alert: 'Something went wrong. Please try again.' # Redirect to an error page or handle the situation where session_id is not present
+      @order = current_customer.orders.create(
+        order_num: params[:session_id],
+        total: total,
+        tax_amount: tax_amount,
+        order_date: Date.current
+      )
     end
-  rescue Stripe::StripeError => e
-    # Handle any errors that might occur during retrieval
-    Rails.logger.error("Stripe session retrieval failed: #{e.message}")
-    redirect_to root_path, alert: 'Something went wrong. Please try again.'
   end
 
   def cancel
-    # Implement any specific logic for handling cancellations
   end
 
   private
 
   def set_customer
     @customer = current_customer
-  end
-
-  def calculate_total_amount
-    # Calculate total amount based on the products in the cart, including taxes
-    total_without_taxes = @products.sum { |product| product.price * session[:cart][product.id.to_s].to_i }
-
-    # Calculate total tax amount based on the products and tax rates
-    total_tax_amount = @products.sum do |product|
-      product.price * (
-        session[:cart][product.id.to_s].to_i * (
-          @customer.province.gst_rate +
-          @customer.province.pst_rate +
-          @customer.province.hst_rate
-        )
-      )
-    end
-
-    # Calculate the final total by adding the total without taxes and total tax amount
-    total_without_taxes + total_tax_amount
-  end
-
-  def total_tax_amount
-    # Calculate total tax amount based on the products and tax rates
-    total_tax_amount = @products.sum do |product|
-      product.price * (
-        session[:cart][product.id.to_s].to_i * (
-          @customer.province.gst_rate +
-          @customer.province.pst_rate +
-          @customer.province.hst_rate
-        )
-      )
-    end
   end
 end

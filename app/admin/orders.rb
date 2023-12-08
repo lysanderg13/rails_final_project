@@ -1,5 +1,5 @@
 ActiveAdmin.register Order do
-  permit_params :customer_id, :order_date, :total, :payment_id, :tax_amount
+  permit_params :customer_id, :order_date, :total, :tax_amount, :order_num
 
   index do
     selectable_column
@@ -8,6 +8,7 @@ ActiveAdmin.register Order do
     column :order_date
     column :total
     column :tax_amount
+    column :order_num
     actions
   end
 
