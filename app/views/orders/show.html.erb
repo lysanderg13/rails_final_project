@@ -1,11 +1,8 @@
 <%= render 'shared/navbar' %>
 <%= yield %>
-<h1>Order Confirmed!</h1>
-
-<h2>Order Details:</h2>
-
+<h2>Your Order Details:</h2>
 <% if @order.present? %>
-  <p>Order Number: <%= @order.order_num %></p>
+  <p>Order Number: <%= @order.id %></p>
   <p>Total Amount: <%= number_to_currency(@order.total) %></p>
   <p>Tax Amount: <%= number_to_currency(@order.tax_amount) %></p>
   <p>Order Date: <%= @order.order_date %></p>

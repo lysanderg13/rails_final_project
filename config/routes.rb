@@ -32,6 +32,8 @@ Rails.application.routes.draw do
 
   resources :cart, only: %i[index]
 
+  resources :orders, only: [:index, :show]
+
   devise_for :admin_users, ActiveAdmin::Devise.config
 
   ActiveAdmin.routes(self)

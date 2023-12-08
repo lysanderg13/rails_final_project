@@ -11,8 +11,6 @@ class CheckoutController < ApplicationController
       return
     end
 
-    session[:checkout_products] = @products.map(&:id)
-
     customer = current_customer
     province = customer.province
 
@@ -84,13 +82,16 @@ class CheckoutController < ApplicationController
   end
 
   def success
-    product_ids = session[:checkout_products]
-    @products = Product.where(id: product_ids)
-
     @session = Stripe::Checkout::Session.retrieve(params[:session_id])
     @payment_intent = Stripe::PaymentIntent.retrieve(@session.payment_intent)
 
-    if current_customer.present? && @products.present?
+    # Assuming params[:product_ids] is an array of product IDs
+    product_ids = params[:product_ids]
+
+    # Fetch the products based on the IDs
+    @products = Product.where(id: product_ids)
+
+    if current_customer.present?
       # Calculate total based on the Stripe session
       total = @session.amount_total / 100.0
 
@@ -110,15 +111,11 @@ class CheckoutController < ApplicationController
         tax_amount: tax_amount,
         order_date: Date.current
       )
-        # Associate products with the order
       @products.each do |product|
-        order_item = @order.order_items.build(product: product, quantity: session[:cart][product.id.to_s].to_i)
-        order_item.price = product.price
-        order_item.save
+      quantity = session[:cart][product.id.to_s].to_i
+      OrderItem.create(order: @order, product: product, quantity: quantity)
       end
-      session.delete(:cart)
     end
-    session.delete(:checkout_products)
   end
 
   def cancel

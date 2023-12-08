@@ -1,0 +1,25 @@
+<h1>Past Orders</h1>
+<% if @orders.present? %>
+  <table>
+    <thead>
+      <tr>
+        <th>Order Number</th>
+        <th>Order Date</th>
+        <th>Total</th>
+        <!-- Add more columns if needed -->
+      </tr>
+    </thead>
+    <tbody>
+      <% @orders.each do |order| %>
+        <tr>
+          <td><%= order.id %></td>
+          <td><%= order.order_date %></td>
+          <td><%= number_to_currency(order.total) %></td>
+          <!-- Add more columns if needed -->
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No past orders found.</p>
+<% end %>
