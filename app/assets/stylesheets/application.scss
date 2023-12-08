@@ -15,8 +15,58 @@
  */
 @import "bootstrap";
 
+
 .card_image
 {
   width: 400px;
   height: 450px;
+}
+
+// General table styling
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+// Heading styles
+h2 {
+  color: #333;
+}
+
+h3 {
+  color: #555;
+}
+
+p {
+  color: #777;
+}
+
+// Product table styling
+.product-table {
+  margin-top: 20px;
+
+  th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #ddd;
+    color: rgb(0, 0, 0);
+  }
+}
+
+.ml-4 {
+  margin-left: 1.5rem !important; /* Add !important to override any conflicting styles */
 }

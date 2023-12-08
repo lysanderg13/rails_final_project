@@ -1,20 +1,26 @@
+<%= render 'shared/navbar' %>
+<%= yield %>
 <h1>Past Orders</h1>
-<% if @orders.present? %>
+<% if @order.present? %>
   <table>
     <thead>
       <tr>
         <th>Order Number</th>
         <th>Order Date</th>
         <th>Total</th>
+        <th>Actions</th> <!-- New column for buttons -->
         <!-- Add more columns if needed -->
       </tr>
     </thead>
     <tbody>
-      <% @orders.each do |order| %>
+      <% @order.each do |order| %>
         <tr>
           <td><%= order.id %></td>
           <td><%= order.order_date %></td>
           <td><%= number_to_currency(order.total) %></td>
+          <td>
+            <%= link_to "View Order", order_path(order), class: "btn btn-primary", style: "color: white;" %>
+          </td>
           <!-- Add more columns if needed -->
         </tr>
       <% end %>

@@ -24,6 +24,11 @@
         <li class="nav-item">
           <%= link_to 'Shopping Cart', cart_index_path, class: 'nav-link' %>
         </li>
+        <li class="nav-item">
+          <% if customer_signed_in? %>
+            <%= link_to 'Orders', orders_path, class: 'nav-link' %>
+          <% end %>
+        </li>
       </ul>
 
       <%= form_tag search_path, method: :get, class: "d-flex", role: "search" do %>
