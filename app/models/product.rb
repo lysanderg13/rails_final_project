@@ -4,6 +4,6 @@ class Product < ApplicationRecord
   has_many :orders, through: :order_items
   has_one_attached :image
 
-  validates :price, :quantity, numericality: { greater_than_or_equal_to: 0 }, presence: true
+  validates :price, :stock_quantity, numericality: { greater_than_or_equal_to: 0 }, presence: true
   validates :category_id, presence: true
 end
