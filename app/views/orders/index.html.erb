@@ -8,8 +8,7 @@
         <th>Order Number</th>
         <th>Order Date</th>
         <th>Total</th>
-        <th>Actions</th> <!-- New column for buttons -->
-        <!-- Add more columns if needed -->
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -21,7 +20,6 @@
           <td>
             <%= link_to "View Order", order_path(order), class: "btn btn-primary", style: "color: white;" %>
           </td>
-          <!-- Add more columns if needed -->
         </tr>
       <% end %>
     </tbody>
