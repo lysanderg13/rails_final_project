@@ -16,7 +16,7 @@
     <p><%= @product.description %></p>
     <p><%= number_to_currency @product.price %></p>
 
-    <%= link_to add_to_cart_path(@product.id), method: :post, class: "btn btn-custom no-underline" do %>
+    <%= button_to add_to_cart_path(@product.id), method: :post, class: "btn btn-custom no-underline" do %>
       Add to cart
     <% end %>
   <% end %>
