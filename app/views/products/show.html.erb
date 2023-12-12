@@ -1,13 +1,42 @@
+<%# Add to cart was changed to be reactive %>
 <%= render 'shared/navbar' %>
+
 <%= yield %>
-<h3><%= @product.name %></h3>
-<% if @product.image.present? %>
-  <div class="card-image">
-    <figure class="image">
-      <%= image_tag @product.image, style: "width:400px; height:450px;" %>
-    </figure>
-  </div>
-<p><%= @product.description %></p>
-<p><%= number_to_currency @product.price %></p>
-<%= button_to 'Add to cart', add_to_cart_path(@product.id), method: :post %>
-<% end %>
+
+<div class="container text-center mt-4">
+  <h3><%= @product.name %></h3>
+
+  <% if @product.image.present? %>
+    <div class="card-image">
+      <figure class="image">
+        <%= image_tag @product.image, style: "width:400px; height:450px;" %>
+      </figure>
+    </div>
+
+    <p><%= @product.description %></p>
+    <p><%= number_to_currency @product.price %></p>
+
+    <%= link_to add_to_cart_path(@product.id), method: :post, class: "btn btn-custom no-underline" do %>
+      Add to cart
+    <% end %>
+  <% end %>
+</div>
+
+<style>
+  .btn-custom {
+    background-color: black;
+    color: white !important; /* Add !important to ensure the text color is applied */
+    padding: 10px 15px;
+    font-weight: bold; /* Make the text bold */
+    transition: background-color 0.3s;
+    cursor: pointer;
+  }
+
+  .btn-custom:hover {
+    background-color: red;
+  }
+
+  .no-underline {
+    text-decoration: none !important;
+  }
+</style>

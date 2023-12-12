@@ -70,3 +70,23 @@ p {
 .ml-4 {
   margin-left: 1.5rem !important; /* Add !important to override any conflicting styles */
 }
+
+/* NAVBAR Custom CSS for changing background color on hover */
+.navbar-nav .nav-link:hover,
+.navbar-nav .dropdown-item:hover {
+  background-color: red;
+}
+
+/* PRODUCT CARD FOR SEARCH Custom CSS for changing text color on hover */
+.card .card-body h2 .product-link {
+  color: black;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.card .card-body h2 .product-link:hover {
+  color: red !important;
+  text-decoration: none !important;
+}
+
+

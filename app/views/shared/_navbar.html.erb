@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
   <div class="container-fluid">
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -6,30 +6,31 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <%= link_to 'Home', root_path, class: 'nav-link active', 'aria-current' => 'page' %>
+          <%= link_to 'Home', root_path, class: 'nav-link active text-white text-decoration-none font-weight-bold', 'aria-current' => 'page' %>
         </li>
         <li class="nav-item">
-          <%= link_to 'About', about_path, class: 'nav-link' %>
+          <%= link_to 'About', about_path, class: 'nav-link text-white text-decoration-none font-weight-bold' %>
         </li>
         <li class="nav-item dropdown"> <!-- Added 'dropdown' class -->
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle text-white text-decoration-none font-weight-bold" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Products
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><%= link_to 'New Arrivals', products_path(category_id: 3), class: 'dropdown-item' %></li>
-            <li><%= link_to 'Men', products_path(category_id: 1), class: 'dropdown-item' %></li>
-            <li><%= link_to 'Women', products_path(category_id: 2), class: 'dropdown-item' %></li>
+            <li><%= link_to 'New Arrivals', products_path(category_id: 3), class: 'dropdown-item text-white text-decoration-none font-weight-bold' %></li>
+            <li><%= link_to 'Men', products_path(category_id: 1), class: 'dropdown-item text-white text-decoration-none font-weight-bold' %></li>
+            <li><%= link_to 'Women', products_path(category_id: 2), class: 'dropdown-item text-white text-decoration-none font-weight-bold' %></li>
           </ul>
         </li>
         <li class="nav-item">
-          <%= link_to 'Shopping Cart', cart_index_path, class: 'nav-link' %>
+          <%= link_to 'Shopping Cart', cart_index_path, class: 'nav-link text-white text-decoration-none font-weight-bold' %>
         </li>
         <li class="nav-item">
           <% if customer_signed_in? %>
-            <%= link_to 'Orders', orders_path, class: 'nav-link' %>
+            <%= link_to 'Orders', orders_path, class: 'nav-link text-white text-decoration-none font-weight-bold' %>
           <% end %>
         </li>
       </ul>
+
 
       <%= form_tag search_path, method: :get, class: "d-flex", role: "search" do %>
         <%= text_field_tag :search, params[:search], class: "form-control me-2", type: "search", placeholder: "Search", aria: { label: "Search" } %>

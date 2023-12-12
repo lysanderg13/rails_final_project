@@ -4,19 +4,18 @@
   <div class="row justify-content-start">
     <% @products.each do |product| %>
       <% if product.image.present? %>
-        <div class="col-md-4 mb-4"> <!-- Adjust the column width and margin based on your needs -->
-          <div class="card" style="height: 100%;">
-            <div class="card-image">
-              <figure class="image" style="height: 200px; overflow: hidden;">
-                <%= image_tag product.image, style: "width:100%; height:100%; object-fit: contain;" %>
-                <!-- Adjust the object-fit based on your needs -->
-              </figure>
+        <div class="col-md-4 mb-4">
+              <div class="card" style="height: 100%;">
+                <div class="card-image">
+                  <figure class="image" style="height: 200px; overflow: hidden;">
+                    <%= image_tag product.image, style: "width:100%; height:100%; object-fit: contain;" %>
+                  </figure>
+                </div>
+                <div class="card-body">
+                  <h2><%= link_to product.name, product, class: 'product-link text-dark text-decoration-none' %></h2>
+                </div>
+              </div>
             </div>
-            <div class="card-body">
-              <h2><%= link_to product.name, product %></h2>
-            </div>
-          </div>
-        </div>
       <% end %>
     <% end %>
   </div>

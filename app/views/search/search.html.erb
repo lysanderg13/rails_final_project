@@ -2,17 +2,46 @@
 <%= render 'shared/navbar' %>
 <%= yield %>
 
-<h1>Search Results for "<%= @query %>"</h1>
+<% if @results.present? %>
+  <div class="container text-center" id="home_columns">
+    <h1>Search Results</h1>
+    <div class="row justify-content-start">
+      <% @results.each do |product| %>
+        <% if product.image.present? && (
+            params[:category].blank? ||
+            (params[:category] == 'men' && product.category_id == 1) ||
+            (params[:category] == 'women' && product.category_id == 2) ||
+            (params[:category] == 'new_arrivals' && product.category_id == 3)
+          ) %>
+            <div class="col-md-4 mb-4">
+              <div class="card" style="height: 100%;">
+                <div class="card-image">
+                  <figure class="image" style="height: 200px; overflow: hidden;">
+                    <%= image_tag product.image, style: "width:100%; height:100%; object-fit: contain;" %>
+                  </figure>
+                </div>
+                <div class="card-body">
+                  <h2><%= link_to product.name, product, class: 'product-link text-dark text-decoration-none' %></h2>
+                </div>
+              </div>
+            </div>
 
-<div class="row justify-content-start">
-  <% @results.each do |product| %>
-    <% if product.image.present? && (
-        params[:category].blank? ||
-        (params[:category] == 'men' && product.category_id == 1) ||
-        (params[:category] == 'women' && product.category_id == 2) ||
-        (params[:category] == 'new_arrivals' && product.category_id == 3)
-      ) %>
-      <%= render 'shared/product', product: product %>
-    <% end %>
-  <% end %>
-</div>
+        <% end %>
+      <% end %>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-md-4">
+        <p class="mt-1">
+          <strong>
+            <%= link_to 'See all Products', products_path %>
+          </strong>
+        </p>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <div class="container text-center">
+    <h1>Search Results for "<%= @query %>"</h1>
+    <p>No Product Found.</p>
+  </div>
+<% end %>
